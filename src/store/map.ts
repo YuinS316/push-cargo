@@ -8,6 +8,11 @@ export const enum MapTile {
   FLOOR = 2,
 }
 
+export interface Position {
+  x: number;
+  y: number;
+}
+
 export const useMapStore = defineStore("mapStore", () => {
   const map = shallowRef([
     [1, 1, 1, 1, 1],
@@ -17,5 +22,13 @@ export const useMapStore = defineStore("mapStore", () => {
     [1, 1, 1, 1, 1],
   ]);
 
-  return { map };
+  function setupMap(m: number[][]) {
+    map.value = m;
+  }
+
+  function isWall(position: Position) {
+    return map.value[position.x][position.y] === MapTile.WALL;
+  }
+
+  return { map, setupMap, isWall };
 });
