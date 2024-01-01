@@ -1,3 +1,4 @@
+import { Position } from "@/types/position";
 import { defineStore } from "pinia";
 import { shallowRef } from "vue";
 
@@ -6,11 +7,6 @@ export const enum MapTile {
   WALL = 1,
   //  地板
   FLOOR = 2,
-}
-
-export interface Position {
-  x: number;
-  y: number;
 }
 
 export const useMapStore = defineStore("mapStore", () => {

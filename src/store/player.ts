@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
-import { Position, useMapStore } from "./map";
+import { useMapStore } from "./map";
+import { Position } from "@/types/position";
 
 export const usePlayerStore = defineStore("player", () => {
   const player = reactive({
