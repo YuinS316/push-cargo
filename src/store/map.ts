@@ -23,7 +23,7 @@ export const useMapStore = defineStore("mapStore", () => {
   }
 
   function isWall(position: Position) {
-    return map.value[position.x][position.y] === MapTile.WALL;
+    return map.value[position.y][position.x] === MapTile.WALL;
   }
 
   return { map, setupMap, isWall };

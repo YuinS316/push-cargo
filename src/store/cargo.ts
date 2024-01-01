@@ -5,12 +5,26 @@ import { ref } from "vue";
 interface Cargo extends Position {}
 
 export const useCargoStore = defineStore("cargo", () => {
-  const cargos = ref<Cargo[]>([
-    { x: 2, y: 2 },
-    { x: 3, y: 2 },
-  ]);
+  const cargos = ref<Cargo[]>([]);
+
+  function createCargo(cargo: Cargo): Cargo {
+    return cargo;
+  }
+
+  function addCargo(cargo: Cargo) {
+    cargos.value.push(cargo);
+  }
+
+  function findCargo(position: Position) {
+    return cargos.value.find(
+      (item) => item.x === position.x && item.y === position.y
+    );
+  }
 
   return {
     cargos,
+    createCargo,
+    addCargo,
+    findCargo,
   };
 });

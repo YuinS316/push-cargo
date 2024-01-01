@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { reactive } from "vue";
 import { useMapStore } from "./map";
 import { Position } from "@/types/position";
+import { useCargoStore } from "./cargo";
 
 export const usePlayerStore = defineStore("player", () => {
   const player = reactive({
@@ -10,64 +11,44 @@ export const usePlayerStore = defineStore("player", () => {
     direction: "left",
   });
 
-  function movePlayerToLeft() {
+  function _move(dx: number, dy: number) {
     const mapStore = useMapStore();
     const { isWall } = mapStore;
     const nextPosition: Position = {
-      x: player.x - 1,
-      y: player.y,
+      x: player.x + dx,
+      y: player.y + dy,
     };
 
     if (isWall(nextPosition)) {
       return;
     }
 
-    player.x -= 1;
-    player.direction = "left";
+    const { findCargo } = useCargoStore();
+    const cargo = findCargo(nextPosition);
+    if (cargo !== undefined) {
+      cargo.x += dx;
+      cargo.y += dy;
+    }
+
+    player.x += dx;
+    player.y += dy;
+    player.direction = dx < 0 ? "left" : dx > 0 ? "right" : player.direction;
+  }
+
+  function movePlayerToLeft() {
+    _move(-1, 0);
   }
 
   function movePlayerToRight() {
-    const mapStore = useMapStore();
-    const { isWall } = mapStore;
-    const nextPosition: Position = {
-      x: player.x + 1,
-      y: player.y,
-    };
-
-    if (isWall(nextPosition)) {
-      return;
-    }
-
-    player.x += 1;
-    player.direction = "right";
+    _move(1, 0);
   }
 
   function movePlayerToTop() {
-    const mapStore = useMapStore();
-    const { isWall } = mapStore;
-    const nextPosition: Position = {
-      x: player.x,
-      y: player.y - 1,
-    };
-
-    if (isWall(nextPosition)) {
-      return;
-    }
-    player.y -= 1;
+    _move(0, -1);
   }
 
   function movePlayerToBottom() {
-    const mapStore = useMapStore();
-    const { isWall } = mapStore;
-    const nextPosition: Position = {
-      x: player.x,
-      y: player.y + 1,
-    };
-
-    if (isWall(nextPosition)) {
-      return;
-    }
-    player.y += 1;
+    _move(0, 1);
   }
 
   return {
