@@ -12,6 +12,9 @@ export const usePlayerStore = defineStore("player", () => {
   });
 
   function _move(dx: number, dy: number) {
+    //  保持方向
+    player.direction = dx < 0 ? "left" : dx > 0 ? "right" : player.direction;
+
     const mapStore = useMapStore();
     const { isWall } = mapStore;
     const nextPosition: Position = {
@@ -23,16 +26,17 @@ export const usePlayerStore = defineStore("player", () => {
       return;
     }
 
-    const { findCargo } = useCargoStore();
+    const { findCargo, moveCargo } = useCargoStore();
     const cargo = findCargo(nextPosition);
     if (cargo !== undefined) {
-      cargo.x += dx;
-      cargo.y += dy;
+      const isCargoMoved = moveCargo(cargo, dx, dy);
+      if (!isCargoMoved) {
+        return;
+      }
     }
 
     player.x += dx;
     player.y += dy;
-    player.direction = dx < 0 ? "left" : dx > 0 ? "right" : player.direction;
   }
 
   function movePlayerToLeft() {

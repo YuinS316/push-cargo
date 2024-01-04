@@ -10,20 +10,14 @@ export const enum MapTile {
 }
 
 export const useMapStore = defineStore("mapStore", () => {
-  const map = shallowRef([
-    [1, 1, 1, 1, 1],
-    [1, 2, 2, 2, 1],
-    [1, 2, 2, 2, 1],
-    [1, 2, 2, 2, 1],
-    [1, 1, 1, 1, 1],
-  ]);
+  const map = shallowRef<number[][]>([]);
 
   function setupMap(m: number[][]) {
     map.value = m;
   }
 
   function isWall(position: Position) {
-    return map.value[position.y][position.x] === MapTile.WALL;
+    return map.value[position.y]?.[position.x] === MapTile.WALL;
   }
 
   return { map, setupMap, isWall };
