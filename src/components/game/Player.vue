@@ -7,10 +7,13 @@ import { usePlayerStore } from "@/store/player";
 import { storeToRefs } from "pinia";
 import { computed, onMounted, onUnmounted } from "vue";
 import { usePosition } from "@/composables/usePosition";
+import { useGameStore } from "@/store/game";
 
 useMove();
 
 const { position } = usePlayerPosition();
+
+const { detectGameCompleted } = useGameStore();
 
 //  监听键盘事件，控制移动
 function useMove() {
@@ -43,6 +46,8 @@ function useMove() {
         break;
       }
     }
+
+    detectGameCompleted();
   };
 
   onMounted(() => {

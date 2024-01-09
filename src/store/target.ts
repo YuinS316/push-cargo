@@ -2,7 +2,7 @@ import { Position } from "@/types/position";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-interface Target extends Position {}
+export interface Target extends Position {}
 
 export const useTargetStore = defineStore("target", () => {
   const targets = ref<Target[]>([]);

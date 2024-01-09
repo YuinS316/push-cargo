@@ -8,6 +8,8 @@
       <Cargo v-bind="cargo"></Cargo>
     </template>
     <Player></Player>
+
+    <button v-show="game.isGameCompleted">下一关</button>
   </div>
 </template>
 
@@ -15,45 +17,24 @@
 import { storeToRefs } from "pinia";
 import { useCargoStore } from "@/store/cargo";
 import { useTargetStore } from "@/store/target";
-import { useMapStore } from "@/store/map";
 import Cargo from "./Cargo.vue";
 import Map from "./Map.vue";
 import Player from "./Player.vue";
 import Target from "./Target.vue";
+import { useGameStore } from "@/store/game";
+import { levelData } from "@/game/gameData";
 
-const { setupMap } = useMapStore();
+const gameStore = useGameStore();
+const { setupGame } = gameStore;
+const { game } = storeToRefs(gameStore);
 
-setupMap([
-  [1, 1, 1, 1, 1],
-  [1, 2, 2, 2, 1],
-  [1, 2, 2, 2, 1],
-  [1, 2, 2, 2, 1],
-  [1, 1, 1, 1, 1],
-]);
+setupGame(levelData);
 
 const cargoStore = useCargoStore();
-const { createCargo, addCargo } = cargoStore;
 const { cargos } = storeToRefs(cargoStore);
 
-initCargos();
-function initCargos() {
-  const c1 = createCargo({ x: 2, y: 2 });
-  const c2 = createCargo({ x: 2, y: 3 });
-  addCargo(c1);
-  addCargo(c2);
-}
-
 const targetStore = useTargetStore();
-const { createTarget, addTarget } = targetStore;
 const { targets } = storeToRefs(targetStore);
-
-initTargets();
-function initTargets() {
-  const t1 = createTarget({ x: 1, y: 2 });
-  const t2 = createTarget({ x: 1, y: 3 });
-  addTarget(t1);
-  addTarget(t2);
-}
 </script>
 
 <style scoped></style>

@@ -4,10 +4,14 @@ import { useMapStore } from "./map";
 import { Position } from "@/types/position";
 import { useCargoStore } from "./cargo";
 
+export interface Player extends Position {
+  direction: string;
+}
+
 export const usePlayerStore = defineStore("player", () => {
-  const player = reactive({
-    x: 1,
-    y: 1,
+  const player = reactive<Player>({
+    x: -1,
+    y: -1,
     direction: "left",
   });
 

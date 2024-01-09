@@ -4,7 +4,7 @@ import { ref } from "vue";
 import { useMapStore } from "./map";
 import { useTargetStore } from "./target";
 
-interface Cargo extends Position {
+export interface Cargo extends Position {
   onTarget: boolean;
 }
 
